@@ -1,0 +1,30 @@
+FLOODGATE HINTS
+
+Task 1
+Hint 1: Think about what happens when a service receives too many requests.
+Hint 2: Availability is the key concept.
+
+Task 2
+Hint 1: Start with the main HTTP service.
+Hint 2: Look at the dashboard and available endpoints.
+
+Task 3
+Hint 1: Compare allowed and blocked requests.
+Hint 2: Look at the request statistics.
+
+Task 4
+Hint 1: Logs can reveal patterns that individual requests cannot.
+Hint 2: Check the source address and HTTP status.
+
+Task 5
+Hint 1: The server does not need to accept unlimited requests.
+Hint 2: HTTP 429 is important.
+
+Task 6
+Hint 1: Combine statistics with logs.
+Hint 2: Look for evidence of excessive traffic.
+
+Task 7
+Hint 1: Review the dashboard first.
+Hint 2: Use both /stats and /logs.
+Hint 3: Think about the defensive control that limits excessive requests.

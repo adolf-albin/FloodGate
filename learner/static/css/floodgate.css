@@ -1,0 +1,712 @@
+
+/* FLOODGATE — LIGHT THM-INSPIRED CYBERSECURITY THEME */
+
+:root {
+    --bg: #f5f5f5;
+    --panel: #ffffff;
+    --panel2: #f0f0f0;
+    --input: #ffffff;
+
+    --red: #e31b23;
+    --red-hover: #c9151c;
+    --red-soft: rgba(227, 27, 35, .08);
+
+    --text: #111111;
+    --muted: #555555;
+    --dim: #777777;
+
+    --border: #dddddd;
+
+    --green: #168544;
+    --green-soft: rgba(22, 133, 68, .09);
+
+    --radius: 6px;
+    --shadow: 0 3px 14px rgba(0,0,0,.08);
+}
+
+/* ---------- GLOBAL ---------- */
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+
+    background:
+        linear-gradient(rgba(0,0,0,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,.025) 1px, transparent 1px),
+        var(--bg);
+
+    background-size: 40px 40px;
+
+    color: var(--text);
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+
+    line-height: 1.6;
+}
+
+/* ---------- HEADINGS ---------- */
+
+h1,
+h2,
+h3,
+h4 {
+    color: #111111;
+    margin-top: 0;
+
+    font-family:
+        Inter,
+        "Segoe UI",
+        Roboto,
+        Arial,
+        sans-serif;
+}
+
+h1 {
+    font-weight: 800;
+    letter-spacing: -.03em;
+}
+
+h2 {
+    font-weight: 750;
+}
+
+h3 {
+    font-weight: 700;
+}
+
+p {
+    color: var(--muted);
+}
+
+a {
+    color: var(--red);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--red-hover);
+}
+
+/* ---------- NAVBAR ---------- */
+
+nav,
+.navbar {
+    min-height: 62px;
+
+    display: flex;
+    align-items: center;
+    gap: 20px;
+
+    padding: 0 24px;
+
+    background: #ffffff;
+
+    border-bottom: 1px solid var(--border);
+
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+
+nav a,
+.navbar a {
+    color: #333333;
+    font-weight: 650;
+}
+
+nav a:hover,
+.navbar a:hover {
+    color: var(--red);
+}
+
+.logo,
+.brand {
+    color: #111111 !important;
+
+    font-weight: 850 !important;
+
+    letter-spacing: .06em;
+
+    text-transform: uppercase;
+}
+
+.logo::before,
+.brand::before {
+    content: "▰ ";
+    color: var(--red);
+}
+
+/* ---------- CONTAINERS ---------- */
+
+.container,
+.page-container,
+.main-container {
+    width: min(1180px, calc(100% - 32px));
+
+    margin: auto;
+
+    padding: 32px 0 60px;
+}
+
+/* ---------- HERO ---------- */
+
+.hero {
+    padding: 55px 0 35px;
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: 8px;
+}
+
+.hero p {
+    max-width: 760px;
+    font-size: 1.05rem;
+}
+
+/* ---------- CARDS ---------- */
+
+.card,
+.panel,
+.task-card,
+.question-card,
+.stat-card {
+    background: var(--panel);
+
+    border: 1px solid var(--border);
+
+    border-radius: var(--radius);
+
+    box-shadow: var(--shadow);
+
+    padding: 24px;
+}
+
+.task-card {
+    transition: .18s ease;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+
+    border-color: #bbbbbb;
+
+    box-shadow: 0 7px 22px rgba(0,0,0,.10);
+}
+
+/* ---------- SECTION TITLES ---------- */
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section-title::before {
+    content: "";
+
+    width: 4px;
+    height: 22px;
+
+    background: var(--red);
+
+    border-radius: 2px;
+}
+
+/* ---------- BADGES ---------- */
+
+.badge,
+.tag,
+.difficulty {
+    display: inline-flex;
+
+    padding: 4px 9px;
+
+    border: 1px solid var(--border);
+
+    border-radius: 4px;
+
+    background: #f3f3f3;
+
+    color: #444444;
+
+    font-size: .72rem;
+
+    font-weight: 750;
+
+    text-transform: uppercase;
+}
+
+.badge.red,
+.tag.red {
+    background: var(--red-soft);
+
+    border-color: rgba(227,27,35,.35);
+
+    color: var(--red);
+}
+
+/* ---------- TERMINAL / CODE ---------- */
+
+pre,
+code,
+.terminal,
+.command-block {
+    font-family:
+        "JetBrains Mono",
+        "Fira Code",
+        Consolas,
+        monospace;
+}
+
+pre,
+.terminal,
+.command-block {
+    background: #f4f4f4;
+
+    border: 1px solid #d7d7d7;
+
+    border-left: 3px solid var(--red);
+
+    border-radius: var(--radius);
+
+    padding: 18px;
+
+    overflow-x: auto;
+
+    color: #222222;
+}
+
+code {
+    background: #eeeeee;
+
+    color: #c4151c;
+
+    padding: 2px 5px;
+
+    border-radius: 3px;
+}
+
+/* ---------- QUESTIONS ---------- */
+
+.question-card {
+    margin: 18px 0;
+}
+
+.question-number {
+    color: var(--red);
+
+    font-size: .75rem;
+
+    font-weight: 800;
+
+    text-transform: uppercase;
+
+    letter-spacing: .08em;
+}
+
+.question-text {
+    color: #111111;
+
+    font-weight: 650;
+
+    margin-bottom: 15px;
+}
+
+/* ---------- FORM ---------- */
+
+input,
+textarea,
+select {
+    width: 100%;
+
+    padding: 12px 14px;
+
+    background: var(--input);
+
+    border: 1px solid #cccccc;
+
+    border-radius: var(--radius);
+
+    color: #111111;
+
+    font: inherit;
+
+    outline: none;
+}
+
+input::placeholder,
+textarea::placeholder {
+    color: #888888;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    border-color: var(--red);
+
+    box-shadow:
+        0 0 0 3px rgba(227,27,35,.10);
+}
+
+/* ---------- BUTTONS ---------- */
+
+button,
+.btn,
+.submit-btn {
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 42px;
+
+    padding: 10px 18px;
+
+    border: 1px solid var(--red);
+
+    border-radius: var(--radius);
+
+    background: var(--red);
+
+    color: #ffffff;
+
+    font: inherit;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .18s ease;
+}
+
+button:hover,
+.btn:hover,
+.submit-btn:hover {
+    background: var(--red-hover);
+
+    border-color: var(--red-hover);
+
+    color: #ffffff;
+
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background: #ffffff;
+
+    border-color: #cccccc;
+
+    color: #333333;
+}
+
+.btn-secondary:hover {
+    background: #f2f2f2;
+
+    border-color: #aaaaaa;
+
+    color: #111111;
+}
+
+/* ---------- STATUS ---------- */
+
+.success,
+.correct,
+.answer-correct,
+.task-complete {
+    margin-top: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px solid rgba(22,133,68,.30);
+
+    border-radius: var(--radius);
+
+    background: var(--green-soft);
+
+    color: var(--green);
+
+    font-weight: 650;
+}
+
+.error,
+.wrong,
+.answer-wrong {
+    margin-top: 12px;
+
+    padding: 12px 14px;
+
+    border: 1px solid rgba(227,27,35,.30);
+
+    border-radius: var(--radius);
+
+    background: var(--red-soft);
+
+    color: var(--red);
+}
+
+.task-complete {
+    padding: 25px;
+
+    text-align: center;
+}
+
+.task-complete h2 {
+    color: var(--green);
+}
+
+/* ---------- PROGRESS ---------- */
+
+.progress {
+    width: 100%;
+
+    height: 8px;
+
+    background: #dddddd;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+
+    background: var(--red);
+
+    border-radius: inherit;
+
+    transition: width .3s ease;
+}
+
+/* ---------- GRIDS ---------- */
+
+.stats-grid,
+.task-grid,
+.cards-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(220px, 1fr));
+
+    gap: 18px;
+}
+
+/* ---------- STATS ---------- */
+
+.stat-value {
+    font-size: 2rem;
+
+    font-weight: 800;
+
+    color: #111111;
+}
+
+.stat-label {
+    color: #666666;
+
+    font-size: .85rem;
+}
+
+/* ---------- LOGS ---------- */
+
+.log,
+.log-entry {
+    padding: 12px 14px;
+
+    margin: 7px 0;
+
+    background: #fafafa;
+
+    border: 1px solid #dddddd;
+
+    border-radius: 5px;
+
+    font-family: monospace;
+}
+
+.allowed {
+    color: var(--green);
+}
+
+.blocked {
+    color: var(--red);
+}
+
+/* ---------- FOOTER ---------- */
+
+footer {
+    margin-top: 60px;
+
+    padding: 25px;
+
+    border-top: 1px solid var(--border);
+
+    color: var(--dim);
+
+    text-align: center;
+
+    font-size: .85rem;
+}
+
+/* ---------- MOBILE ---------- */
+
+@media (max-width: 700px) {
+
+    nav,
+    .navbar {
+        padding: 0 14px;
+
+        gap: 12px;
+
+        flex-wrap: wrap;
+    }
+
+    .container,
+    .page-container,
+    .main-container {
+        width: min(100% - 20px, 1180px);
+
+        padding-top: 22px;
+    }
+
+    .card,
+    .panel,
+    .task-card,
+    .question-card {
+        padding: 18px;
+    }
+
+    .hero {
+        padding: 35px 0 25px;
+    }
+
+    button,
+    .btn,
+    .submit-btn {
+        width: 100%;
+    }
+}
+
+/* ---------- TASK NAVIGATION ---------- */
+
+.task-link {
+    display: inline-block;
+    color: #111111;
+    text-decoration: none;
+    transition: .18s ease;
+}
+
+.task-link:hover {
+    color: #e31b23;
+    transform: translateX(3px);
+}
+
+.task-link b {
+    cursor: pointer;
+}
+
+.task-link b::after {
+    content: " →";
+    color: #e31b23;
+    font-weight: 800;
+}
+
+
+
+/* FloodGate Learning Progress */
+
+.progress-list {
+    display: grid;
+    gap: 12px;
+    margin-bottom: 30px;
+}
+
+.progress-card {
+    padding: 16px;
+    border: 1px solid #d9dee7;
+    border-radius: 10px;
+    background: #ffffff;
+}
+
+.progress-header,
+.progress-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.progress-header {
+    margin-bottom: 10px;
+    font-size: 15px;
+}
+
+.progress-track {
+    width: 100%;
+    height: 10px;
+    background: #e9edf2;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #2563eb;
+    border-radius: 10px;
+    transition: width 0.4s ease;
+}
+
+.progress-footer {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #667085;
+}
+
+.progress-card:has(.progress-fill[style*="100%"]) {
+    border-color: #16a34a;
+}
+
+
+
+.certificate-card {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 2px solid #16a34a;
+    border-radius: 12px;
+    background: #f0fdf4;
+}
+
+.certificate-card h2 {
+    margin-top: 0;
+}
+
+.certificate-card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    background: #16a34a;
+    color: white;
+}
+
+
+.certificate-card a {
+    margin-right: 10px;
+}

@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+*.db
+*.db-*
+generated_certificates/
+*.backup
+*.before-auth
+*.auth-backup
+*.progress-backup
+*.dashboard-progress-backup
+*.certificate-backup
+*.certificate-stage2-backup
+*.pdf-certificate-backup
+*.before-admin
+*.before-final-cleanup
+author/.room_solutions
+.env

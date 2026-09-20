@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FloodGate — Task 7</title>
+<link rel="stylesheet" href="/static/css/floodgate.css">
+</head>
+
+<body>
+<div class="container">
+
+<span class="badge">FloodGate • Task 7/7</span>
+
+<h1>🏆 Task 7 — Final Challenge: Practical Investigation</h1>
+
+<div class="box">
+<h2>Learning Objectives</h2>
+<p>This is the final FloodGate challenge.
+
+You are given the behavior of the controlled simulation and must analyze the evidence independently. Avoid simply repeating definitions from previous tasks.
+
+Use the dashboard, statistics, logs, and observed responses to reach your own conclusion.</p>
+</div>
+
+<div class="box">
+<h2>🧪 Lab Steps</h2>
+<ol><li>Run the controlled simulator.</li><li>Inspect /stats.</li><li>Inspect /logs.</li><li>Compare accepted and rejected requests.</li><li>Calculate the required percentages and rates.</li><li>Determine the sequence of events.</li><li>Write your final conclusion from the evidence.</li></ol>
+<h2>🧪 Commands</h2><pre>python traffic_sim.py</pre><pre>curl http://127.0.0.1:5000/stats</pre><pre>curl http://127.0.0.1:5000/logs</pre>
+</div>
+
+<div class="box">
+<h2>⚠️ Controlled Lab</h2>
+<p>
+All testing must remain against the local FloodGate training service
+at <b>127.0.0.1</b>. Do not modify the simulator to target external systems.
+</p>
+</div>
+
+<h2>Questions</h2>
+
+
+<div class="question">
+<p><b>Question 1</b></p>
+<p>Twenty requests were generated and five were accepted. What was the acceptance percentage?</p>
+<input id="answer1" type="text" placeholder="Enter your answer">
+<button id="button1" onclick="submitAnswer(1)">Submit</button>
+<div id="result1" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 2</b></p>
+<p>Twenty requests were generated and fifteen were rejected. What was the rejection percentage?</p>
+<input id="answer2" type="text" placeholder="Enter your answer">
+<button id="button2" onclick="submitAnswer(2)">Submit</button>
+<div id="result2" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 3</b></p>
+<p>If requests 1 through 5 were accepted, which request was the first rejected request?</p>
+<input id="answer3" type="text" placeholder="Enter your answer">
+<button id="button3" onclick="submitAnswer(3)">Submit</button>
+<div id="result3" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 4</b></p>
+<p>Five requests were accepted during a ten-second window. What was the average accepted-request rate per second?</p>
+<input id="answer4" type="text" placeholder="Enter your answer">
+<button id="button4" onclick="submitAnswer(4)">Submit</button>
+<div id="result4" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 5</b></p>
+<p>Did the controlled simulation use a single source address?</p>
+<input id="answer5" type="text" placeholder="Enter your answer">
+<button id="button5" onclick="submitAnswer(5)">Submit</button>
+<div id="result5" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 6</b></p>
+<p>How would you classify the observed traffic pattern?</p>
+<input id="answer6" type="text" placeholder="Enter your answer">
+<button id="button6" onclick="submitAnswer(6)">Submit</button>
+<div id="result6" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 7</b></p>
+<p>Which two evidence sources should be correlated to connect overall traffic volume with individual security events?</p>
+<input id="answer7" type="text" placeholder="Enter your answer">
+<button id="button7" onclick="submitAnswer(7)">Submit</button>
+<div id="result7" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 8</b></p>
+<p>Which defensive control prevented further requests from receiving normal responses after the threshold was reached?</p>
+<input id="answer8" type="text" placeholder="Enter your answer">
+<button id="button8" onclick="submitAnswer(8)">Submit</button>
+<div id="result8" class="result"></div>
+</div>
+
+
+<div id="task-completion"></div>
+
+<div class="box">
+<h2>🧠 Think Like a Defender</h2>
+<p>The final challenge tests whether you can combine measurements, event data, and defensive behavior into one evidence-based conclusion.</p>
+</div>
+
+</div>
+
+<script>
+const solved = new Set();
+const TOTAL = 8;
+
+async function submitAnswer(question) {
+    const input = document.getElementById("answer" + question);
+    const button = document.getElementById("button" + question);
+    const result = document.getElementById("result" + question);
+
+    if (!input || !button || !result) {
+        console.error("Required question element missing.");
+        return;
+    }
+
+    const answer = input.value.trim();
+
+    if (!answer) {
+        result.textContent = "❌ Please enter an answer.";
+        result.className = "result wrong";
+        return;
+    }
+
+    try {
+        const response = await fetch("/check/task/7", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: String(question),
+                answer: answer
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        if (data.correct === true) {
+            result.textContent = "✅ Correct!";
+            result.className = "result correct";
+
+            input.disabled = true;
+            button.disabled = true;
+
+            solved.add(String(question));
+
+            if (data.task_completed === true || solved.size === TOTAL) {
+                const completion =
+                    document.getElementById("task-completion");
+
+                if (completion) {
+                    completion.textContent =
+                        "🏆 Task 7 completed!";
+                    completion.className = "result correct";
+                }
+            }
+        } else {
+            result.textContent = "❌ Wrong answer. Try again.";
+            result.className = "result wrong";
+        }
+
+    } catch (error) {
+        console.error("Answer check failed:", error);
+
+        result.textContent =
+            "❌ Unable to contact the server (" +
+            error.message + ")";
+
+        result.className = "result wrong";
+    }
+}
+</script>
+
+</body>
+</html>

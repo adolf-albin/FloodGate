@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FloodGate — Task 5</title>
+<link rel="stylesheet" href="/static/css/floodgate.css">
+</head>
+
+<body>
+<div class="container">
+
+<span class="badge">FloodGate • Task 5/7</span>
+
+<h1>🚦 Task 5 — Rate Limiting</h1>
+
+<div class="box">
+<h2>Learning Objectives</h2>
+<p>Rate limiting is a defensive mechanism that controls how many requests a client can make within a defined period.
+
+In this task, investigate the actual threshold and window used by FloodGate and understand what happens when that threshold is reached.</p>
+</div>
+
+<div class="box">
+<h2>🧪 Lab Steps</h2>
+<ol><li>Inspect /stats to discover the current rate-limit configuration.</li><li>Run the controlled simulator.</li><li>Observe when requests begin receiving HTTP 429.</li><li>Wait for old requests to leave the tracking window.</li><li>Make another local request and observe the result.</li></ol>
+<h2>🧪 Commands</h2><pre>curl http://127.0.0.1:5000/stats</pre><pre>python traffic_sim.py</pre><pre>curl -i http://127.0.0.1:5000/</pre>
+</div>
+
+<div class="box">
+<h2>⚠️ Controlled Lab</h2>
+<p>
+All testing must remain against the local FloodGate training service
+at <b>127.0.0.1</b>. Do not modify the simulator to target external systems.
+</p>
+</div>
+
+<h2>Questions</h2>
+
+
+<div class="question">
+<p><b>Question 1</b></p>
+<p>How many requests can one client make during the current rate-limit window?</p>
+<input id="answer1" type="text" placeholder="Enter your answer">
+<button id="button1" onclick="submitAnswer(1)">Submit</button>
+<div id="result1" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 2</b></p>
+<p>How long is the current rate-limit window?</p>
+<input id="answer2" type="text" placeholder="Enter your answer">
+<button id="button2" onclick="submitAnswer(2)">Submit</button>
+<div id="result2" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 3</b></p>
+<p>Which HTTP status communicates that too many requests have been sent?</p>
+<input id="answer3" type="text" placeholder="Enter your answer">
+<button id="button3" onclick="submitAnswer(3)">Submit</button>
+<div id="result3" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 4</b></p>
+<p>Does the current control permanently ban the client?</p>
+<input id="answer4" type="text" placeholder="Enter your answer">
+<button id="button4" onclick="submitAnswer(4)">Submit</button>
+<div id="result4" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 5</b></p>
+<p>What happens to older tracked requests when they leave the time window?</p>
+<input id="answer5" type="text" placeholder="Enter your answer">
+<button id="button5" onclick="submitAnswer(5)">Submit</button>
+<div id="result5" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 6</b></p>
+<p>Why does rate limiting improve service availability?</p>
+<input id="answer6" type="text" placeholder="Enter your answer">
+<button id="button6" onclick="submitAnswer(6)">Submit</button>
+<div id="result6" class="result"></div>
+</div>
+
+
+<div id="task-completion"></div>
+
+<div class="box">
+<h2>🧠 Think Like a Defender</h2>
+<p>A rate limiter is usually time-based. Reaching a threshold does not necessarily mean an IP has been permanently banned.</p>
+</div>
+
+</div>
+
+<script>
+const solved = new Set();
+const TOTAL = 6;
+
+async function submitAnswer(question) {
+    const input = document.getElementById("answer" + question);
+    const button = document.getElementById("button" + question);
+    const result = document.getElementById("result" + question);
+
+    if (!input || !button || !result) {
+        console.error("Required question element missing.");
+        return;
+    }
+
+    const answer = input.value.trim();
+
+    if (!answer) {
+        result.textContent = "❌ Please enter an answer.";
+        result.className = "result wrong";
+        return;
+    }
+
+    try {
+        const response = await fetch("/check/task/5", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: String(question),
+                answer: answer
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        if (data.correct === true) {
+            result.textContent = "✅ Correct!";
+            result.className = "result correct";
+
+            input.disabled = true;
+            button.disabled = true;
+
+            solved.add(String(question));
+
+            if (data.task_completed === true || solved.size === TOTAL) {
+                const completion =
+                    document.getElementById("task-completion");
+
+                if (completion) {
+                    completion.textContent =
+                        "🏆 Task 5 completed!";
+                    completion.className = "result correct";
+                }
+            }
+        } else {
+            result.textContent = "❌ Wrong answer. Try again.";
+            result.className = "result wrong";
+        }
+
+    } catch (error) {
+        console.error("Answer check failed:", error);
+
+        result.textContent =
+            "❌ Unable to contact the server (" +
+            error.message + ")";
+
+        result.className = "result wrong";
+    }
+}
+</script>
+
+</body>
+</html>

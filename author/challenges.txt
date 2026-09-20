@@ -1,0 +1,22 @@
+FLOODGATE CHALLENGES
+
+Task 1 — DoS Fundamentals
+Learn the fundamentals of Denial-of-Service attacks, service availability, legitimate traffic, and excessive requests.
+
+Task 2 — Reconnaissance
+Explore the FloodGate service and identify HTTP endpoints, ports, responses, and service information.
+
+Task 3 — Traffic Analysis
+Analyze controlled traffic and determine allowed requests, blocked requests, traffic percentages, and response patterns.
+
+Task 4 — Detection
+Use logs and source information to identify unusual traffic patterns from a defensive monitoring perspective.
+
+Task 5 — Rate Limiting
+Understand how rate limiting controls excessive requests and helps protect service availability.
+
+Task 6 — Incident Investigation
+Investigate the simulated event using traffic statistics and logs.
+
+Task 7 — Final Challenge
+Apply the skills learned throughout the room to complete a practical defensive investigation.

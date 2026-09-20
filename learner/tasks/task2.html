@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FloodGate — Task 2</title>
+<link rel="stylesheet" href="/static/css/floodgate.css">
+</head>
+
+<body>
+<div class="container">
+
+<span class="badge">FloodGate • Task 2/7</span>
+
+<h1>🔎 Task 2 — Reconnaissance</h1>
+
+<div class="box">
+<h2>Learning Objectives</h2>
+<p>Reconnaissance is the process of discovering information about a service before deeper analysis.
+
+In this controlled lab you will identify the FloodGate service, inspect its HTTP response, and discover useful application endpoints.</p>
+</div>
+
+<div class="box">
+<h2>🧪 Lab Steps</h2>
+<ol><li>Confirm that the training service is running.</li><li>Use curl against the local service.</li><li>Inspect the HTTP response and identify the server port.</li><li>Visit the application's known endpoints and determine what each one provides.</li><li>Do not modify the service or target anything outside the local laboratory.</li></ol>
+<h2>🧪 Commands</h2><pre>curl -i http://127.0.0.1:5000/</pre><pre>curl http://127.0.0.1:5000/stats</pre><pre>curl http://127.0.0.1:5000/logs</pre>
+</div>
+
+<div class="box">
+<h2>⚠️ Controlled Lab</h2>
+<p>
+All testing must remain against the local FloodGate training service
+at <b>127.0.0.1</b>. Do not modify the simulator to target external systems.
+</p>
+</div>
+
+<h2>Questions</h2>
+
+
+<div class="question">
+<p><b>Question 1</b></p>
+<p>What protocol is being used to communicate with the FloodGate web service?</p>
+<input id="answer1" type="text" placeholder="Enter your answer">
+<button id="button1" onclick="submitAnswer(1)">Submit</button>
+<div id="result1" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 2</b></p>
+<p>What port is the FloodGate service listening on?</p>
+<input id="answer2" type="text" placeholder="Enter your answer">
+<button id="button2" onclick="submitAnswer(2)">Submit</button>
+<div id="result2" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 3</b></p>
+<p>Which HTTP status code normally indicates a successful response?</p>
+<input id="answer3" type="text" placeholder="Enter your answer">
+<button id="button3" onclick="submitAnswer(3)">Submit</button>
+<div id="result3" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 4</b></p>
+<p>Which endpoint exposes traffic statistics?</p>
+<input id="answer4" type="text" placeholder="Enter your answer">
+<button id="button4" onclick="submitAnswer(4)">Submit</button>
+<div id="result4" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 5</b></p>
+<p>Which endpoint exposes individual security events?</p>
+<input id="answer5" type="text" placeholder="Enter your answer">
+<button id="button5" onclick="submitAnswer(5)">Submit</button>
+<div id="result5" class="result"></div>
+</div>
+
+<div class="question">
+<p><b>Question 6</b></p>
+<p>Which endpoint provides the visual monitoring interface?</p>
+<input id="answer6" type="text" placeholder="Enter your answer">
+<button id="button6" onclick="submitAnswer(6)">Submit</button>
+<div id="result6" class="result"></div>
+</div>
+
+
+<div id="task-completion"></div>
+
+<div class="box">
+<h2>🧠 Think Like a Defender</h2>
+<p>Reconnaissance is about discovering what is available and understanding the service before drawing conclusions.</p>
+</div>
+
+</div>
+
+<script>
+const solved = new Set();
+const TOTAL = 6;
+
+async function submitAnswer(question) {
+    const input = document.getElementById("answer" + question);
+    const button = document.getElementById("button" + question);
+    const result = document.getElementById("result" + question);
+
+    if (!input || !button || !result) {
+        console.error("Required question element missing.");
+        return;
+    }
+
+    const answer = input.value.trim();
+
+    if (!answer) {
+        result.textContent = "❌ Please enter an answer.";
+        result.className = "result wrong";
+        return;
+    }
+
+    try {
+        const response = await fetch("/check/task/2", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                question: String(question),
+                answer: answer
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error("HTTP " + response.status);
+        }
+
+        const data = await response.json();
+
+        if (data.correct === true) {
+            result.textContent = "✅ Correct!";
+            result.className = "result correct";
+
+            input.disabled = true;
+            button.disabled = true;
+
+            solved.add(String(question));
+
+            if (data.task_completed === true || solved.size === TOTAL) {
+                const completion =
+                    document.getElementById("task-completion");
+
+                if (completion) {
+                    completion.textContent =
+                        "🏆 Task 2 completed!";
+                    completion.className = "result correct";
+                }
+            }
+        } else {
+            result.textContent = "❌ Wrong answer. Try again.";
+            result.className = "result wrong";
+        }
+
+    } catch (error) {
+        console.error("Answer check failed:", error);
+
+        result.textContent =
+            "❌ Unable to contact the server (" +
+            error.message + ")";
+
+        result.className = "result wrong";
+    }
+}
+</script>
+
+</body>
+</html>

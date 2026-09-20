@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FloodGate - Login</title>
+    <link rel="stylesheet" href="/static/css/floodgate.css">
+</head>
+<body>
+
+<div class="auth-container">
+    <div class="auth-card">
+        <h1>FloodGate</h1>
+        <h2>Login</h2>
+
+        <form method="POST" action="/login">
+
+            <label for="username">Username</label>
+            <input
+                type="text"
+                id="username"
+                name="username"
+                required
+                autocomplete="username"
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                autocomplete="current-password"
+            >
+
+            <button type="submit">Login</button>
+        </form>
+
+        <p>New to FloodGate?</p>
+        <a href="/register">Create an account</a>
+    </div>
+</div>
+
+</body>
+</html>

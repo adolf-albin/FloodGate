@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>FloodGate Security Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/static/css/floodgate.css">
+</head>
+<body>
+
+<h1>🛡️ FloodGate</h1>
+<p>DoS Defense & Traffic Monitoring Lab</p>
+
+<div class="user-bar">
+    <span>👤 Logged in as: <strong id="username">Loading...</strong></span>
+    <a href="/logout">Logout</a>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <div>Total Requests</div>
+        <div class="number" id="total">0</div>
+    </div>
+
+    <div class="card">
+        <div>Allowed</div>
+        <div class="number allowed" id="allowed">0</div>
+    </div>
+
+    <div class="card">
+        <div>Blocked</div>
+        <div class="number blocked" id="blocked">0</div>
+    </div>
+
+    <div class="card">
+        <div>Requests / Second</div>
+        <div class="number" id="rps">0</div>
+    </div>
+</div>
+
+<h2>Your Learning Progress</h2>
+
+<div class="certificate-card" id="certificate">
+    <div id="certificate-locked">
+        <h2>🔒 Certificate Locked</h2>
+        <p>Complete all 7 tasks and all 45 questions to unlock your Certificate of Completion.</p>
+        <p><strong>Requirement:</strong> Complete all 45 questions</p>
+<p><strong>Progress:</strong> <span id="certificate-progress">0 / 45 questions</span></p>
+    </div>
+
+    <div id="certificate-unlocked" style="display:none;">
+        <h2>🏆 Certificate Unlocked</h2>
+        <p>Congratulations! You completed the FloodGate learning lab.</p>
+        <p><strong>Certificate ID:</strong> <span id="certificate-id"></span></p>
+        <p><strong>Issued:</strong> <span id="certificate-date"></span></p>
+
+        <div>
+            <a id="certificate-download" href="/certificate/download">
+                Download Certificate PDF
+            </a>
+            <a id="certificate-verify" href="#" target="_blank">
+                Verify Certificate
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="progress-list" id="progress">
+    Loading progress...
+</div>
+
+<h2>Security Events</h2>
+<div id="logs">Loading...</div>
+
+<script>
+async function updateDashboard() {
+    try {
+        const meResponse = await fetch("/me");
+
+        if (meResponse.ok) {
+            const me = await meResponse.json();
+            document.getElementById("username").textContent = me.username;
+        }
+
+        const progress = await fetch("/progress").then(r => r.json());
+
+const totalCompletedQuestions = Object.values(progress)
+    .reduce((sum, task) => sum + task.completed, 0);
+
+document.getElementById("certificate-progress").textContent =
+    `${totalCompletedQuestions} / 45 questions`;
+
+const certificate = await fetch("/certificate").then(r => r.json());
+
+const certificateBox = document.getElementById("certificate");
+const lockedBox = document.getElementById("certificate-locked");
+const unlockedBox = document.getElementById("certificate-unlocked");
+
+if (certificate.available) {
+    lockedBox.style.display = "none";
+    unlockedBox.style.display = "block";
+
+    document.getElementById("certificate-id").textContent =
+        certificate.certificate_id;
+
+    document.getElementById("certificate-date").textContent =
+        certificate.issued_at;
+
+    document.getElementById("certificate-verify").href =
+        "/verify/" + encodeURIComponent(certificate.certificate_id);
+} else {
+    lockedBox.style.display = "block";
+    unlockedBox.style.display = "none";
+}
+
+
+        document.getElementById("progress").innerHTML =
+            Object.entries(progress).map(([task, data]) => {
+                const percent = Math.round((data.completed / data.total) * 100);
+                const status = data.complete ? "✓ COMPLETE" : `${data.completed} / ${data.total} questions`;
+
+                return `
+                    <div class="progress-card">
+                        <div class="progress-header">
+                            <strong>Task ${task}</strong>
+                            <span>${percent}%</span>
+                        </div>
+
+                        <div class="progress-track">
+                            <div class="progress-fill" style="width: ${percent}%"></div>
+                        </div>
+
+                        <div class="progress-footer">
+                            <span>${status}</span>
+                            <span>${data.completed}/${data.total}</span>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+        const stats = await fetch("/stats").then(r => r.json());
+
+        document.getElementById("total").textContent = stats.total_requests;
+        document.getElementById("allowed").textContent = stats.allowed_requests;
+        document.getElementById("blocked").textContent = stats.blocked_requests;
+        document.getElementById("rps").textContent = stats.requests_per_second;
+
+        const logs = await fetch("/logs").then(r => r.json());
+
+        document.getElementById("logs").innerHTML =
+            logs.slice().reverse().map(log =>
+                `<div class="${log.status.toLowerCase()}">
+                    [${log.time}] ${log.ip} → ${log.status}
+                </div>`
+            ).join("");
+
+    } catch (error) {
+        document.getElementById("logs").textContent =
+            "Dashboard connection error";
+    }
+}
+
+updateDashboard();
+setInterval(updateDashboard, 2000);
+</script>
+
+</body>
+</html>

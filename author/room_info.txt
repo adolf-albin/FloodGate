@@ -1,0 +1,31 @@
+FLOODGATE — DoS Defense Lab
+
+Difficulty: Easy
+Estimated Time: 45–60 minutes
+Category: Defensive Security / Web Security
+
+Description:
+FloodGate is a controlled local security lab that teaches the fundamentals of Denial-of-Service attacks and defensive monitoring.
+
+Learners investigate controlled HTTP traffic, identify normal and excessive request patterns, analyze logs and statistics, understand HTTP responses, and study rate limiting as a defensive mechanism.
+
+Learning Objectives:
+1. Understand basic DoS concepts.
+2. Identify legitimate and excessive traffic.
+3. Analyze HTTP responses and traffic statistics.
+4. Use logs for security investigation.
+5. Understand rate limiting.
+6. Investigate a simulated security event.
+7. Apply defensive analysis techniques.
+
+Prerequisites:
+- Basic HTTP knowledge
+- Basic web security concepts
+- Basic command-line knowledge
+
+Environment:
+FloodGate runs locally and is designed for controlled educational use.
+All simulated traffic remains inside the lab environment.
+
+Safety:
+This room is designed for defensive learning. Do not direct simulated traffic at systems you do not own or have explicit permission to test.
