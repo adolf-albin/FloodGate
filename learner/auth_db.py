@@ -1,9 +1,10 @@
+import os
 import sqlite3
 from pathlib import Path
 from werkzeug.security import generate_password_hash, check_password_hash
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "floodgate.db"
+DB_PATH = Path(os.environ.get("FLOODGATE_DB_PATH", str(BASE_DIR / "floodgate.db")))
 
 
 def get_connection():
